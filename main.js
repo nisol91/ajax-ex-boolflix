@@ -2,12 +2,11 @@ $(document).ready(function() {
 
 
 $('.my_button').click(function() {
-  //pulisco quello che c era scritto nella ricerca
-  // $('.searchbar input').val('')
+
 
   var ricerca = $('.searchbar .my_input').val()
   console.log(ricerca);
-
+  $('.vetrina .film').remove()
   $.ajax({
     url: 'https://api.themoviedb.org/3/search/movie?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
     type: 'GET',
@@ -35,7 +34,8 @@ $('.my_button').click(function() {
       $(this).find('h4').text(films[index]['original_language'])
 
     });
-
+    //pulisco quello che c era scritto nella ricerca
+    $('.searchbar input').val('')
     },
     error: function() {
     console.log("error");

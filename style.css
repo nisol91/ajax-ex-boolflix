@@ -12,7 +12,6 @@ h1, h2, h3, h4, h5, h6 {
   background: grey;
   background-size: cover;
   background-repeat: no-repeat;
-  width: 100vw;
   height: 100vh;
 }
 .navbar {
@@ -64,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .film {
   height: 200px;
-  width: 30%;
+  width: 33%;
   margin: auto;
   border-bottom: 1px solid black;
 }
@@ -91,4 +90,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 .templates {
   display: none;
+}
+.stars {
+  display: flex;
+  color: rgb(208, 194, 103);
+  font-size: 10px;
+}
+.stars h6 {
+  color: black;
 }

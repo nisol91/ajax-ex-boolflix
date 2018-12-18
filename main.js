@@ -87,6 +87,30 @@ function my_query(ricerca) {
         $(this).find('h4').text(lingua)
         $(this).find('.over p').text(films[index]['overview'])
 
+        //chiamata ajax per gli attori dentro a credit
+        var codice = films[index]['id']
+        console.log(codice);
+        //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
+        //la chiamata stessa!!!
+        var vetrina_film = $(this)
+        $.ajax({
+          url: 'https://api.themoviedb.org/3/movie/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+          type: 'GET',
+          data: {
+          },
+          success: function(data) {
+            console.log("success");
+            for (var i = 0; i < 5; i++) {
+              var attori = data.cast[i]['name']
+              console.log(attori);
+              vetrina_film.find('.credits').append('<p>' + attori + '</p>')
+            }
+          },
+          error: function() {
+            console.log("error");
+          }
+        });
+        //-----------
 
         var immagine_copertina = films[index]['poster_path']
         $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w185' + immagine_copertina);
@@ -159,7 +183,30 @@ function my_query(ricerca) {
               $(this).find('h3').text(voto_5)
               $(this).find('h4').text(lingua)
               $(this).find('.over p').text(films[index]['overview'])
-              
+
+              //chiamata ajax per gli attori dentro a credit
+              var codice = films[index]['id']
+              console.log(codice);
+              //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
+              //la chiamata stessa!!!
+              var vetrina_film = $(this)
+              $.ajax({
+                url: 'https://api.themoviedb.org/3/tv/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+                type: 'GET',
+                data: {
+                },
+                success: function(data) {
+                  console.log("success");
+                  for (var i = 0; i < 5; i++) {
+                    var attori = data.cast[i]['name']
+                    console.log(attori);
+                    vetrina_film.find('.credits').append('<p>' + attori + '</p>')
+                  }
+                },
+                error: function() {
+                  console.log("error");
+                }
+              });
 
 
               var immagine_copertina = films[index]['poster_path']

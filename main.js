@@ -103,7 +103,11 @@ function my_query(ricerca) {
             for (var i = 0; i < 5; i++) {
               var attori = data.cast[i]['name']
               console.log(attori);
-              vetrina_film.find('.credits').append('<p>' + attori + '</p>')
+              if (i < 4) {
+                vetrina_film.find('.credits .attori').append(attori + ', ')
+              } else {
+                vetrina_film.find('.credits .attori').append(attori + '.')
+              }
             }
           },
           error: function() {
@@ -200,7 +204,11 @@ function my_query(ricerca) {
                   for (var i = 0; i < 5; i++) {
                     var attori = data.cast[i]['name']
                     console.log(attori);
-                    vetrina_film.find('.credits').append('<p>' + attori + '</p>')
+                    if (i < 4) {
+                      vetrina_film.find('.credits .attori').append(attori + ', ')
+                    } else {
+                      vetrina_film.find('.credits .attori').append(attori + '.')
+                    }
                   }
                 },
                 error: function() {

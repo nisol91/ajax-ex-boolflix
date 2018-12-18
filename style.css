@@ -62,28 +62,29 @@ h1, h2, h3, h4, h5, h6 {
   flex-wrap: wrap;
 }
 .film {
-  height: auto;
+  height: 300px;
   width: 33%;
   margin: auto;
   border-bottom: 1px solid black;
+  position: relative;
 }
 .film > * {
   margin: 20px 0;
 }
 .film h1 {
-  font-size: 10px;
+  font-size: 9px;
 }
 .film h2 {
-  font-size: 10px;
+  font-size: 9px;
 }
 .film h3 {
-  font-size: 10px;
+  font-size: 9px;
 }
 .film h4 {
-  font-size: 10px;
+  font-size: 9px;
 }
 .film h6 {
-  font-size: 10px;
+  font-size: 9px;
 }
 .film_val {
   display: flex;
@@ -105,5 +106,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 .img_copertina {
   width: auto;
-  height: 200px;
+  height: 260px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.over p {
+  font-size: 10px;
 }

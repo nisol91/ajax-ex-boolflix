@@ -46,6 +46,7 @@ function my_query(ricerca) {
 
   $('.vetrina .film').remove()
 
+
   //chiamata per FILM
   $.ajax({
     url: 'https://api.themoviedb.org/3/search/movie?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
@@ -79,13 +80,17 @@ function my_query(ricerca) {
           }
         }
 
-        var immagine_copertina = films[index]['poster_path']
 
         $(this).find('h1').text(films[index]['title'])
         $(this).find('h2').text(films[index]['original_title'])
         $(this).find('h3').text(voto_5)
         $(this).find('h4').text(lingua)
+        $(this).find('.over p').text(films[index]['overview'])
+
+
+        var immagine_copertina = films[index]['poster_path']
         $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w185' + immagine_copertina);
+
         for (var i = 0; i < voto_5; i++) {
           var copy_star = $('.templates .stelle_piene').clone();
           $(this).find('.stars').append(copy_star)
@@ -95,7 +100,24 @@ function my_query(ricerca) {
           $(this).find('.stars').append(copy_star)
         }
 
+        //nascondo le scritte
+        $('.vetrina .film div').hide()
+        //on hover mouse per mostrare le scritte
+        $(document).on('mouseenter', '.vetrina .film .img_copertina', function(event) {
+          $('.vetrina .film div').hide()
+          $('.vetrina .film .img_copertina').show()
+          $(this).slideUp()
+          $(this).siblings('div').show()
+        });
+        $(document).on('mouseleave', '.vetrina .film', function(event) {
+          $('.vetrina .film div').hide()
+          $('.vetrina .film .img_copertina').show()
+          $(this).siblings('div').show()
+        });
+
       });
+
+
       //pulisco quello che c era scritto nella ricerca
       $('.searchbar input').val('')
       //chiamata per SERIE TV
@@ -136,6 +158,8 @@ function my_query(ricerca) {
               $(this).find('h2').text(films[index]['original_name'])
               $(this).find('h3').text(voto_5)
               $(this).find('h4').text(lingua)
+              var immagine_copertina = films[index]['poster_path']
+              $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w342' + immagine_copertina);
               for (var i = 0; i < voto_5; i++) {
                 var copy_star = $('.templates .stelle_piene').clone();
                 $(this).find('.stars').append(copy_star)

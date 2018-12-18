@@ -158,6 +158,10 @@ function my_query(ricerca) {
               $(this).find('h2').text(films[index]['original_name'])
               $(this).find('h3').text(voto_5)
               $(this).find('h4').text(lingua)
+              $(this).find('.over p').text(films[index]['overview'])
+              
+
+
               var immagine_copertina = films[index]['poster_path']
               $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w342' + immagine_copertina);
               for (var i = 0; i < voto_5; i++) {
@@ -168,6 +172,21 @@ function my_query(ricerca) {
                 var copy_star = $('.templates .stelle_vuote').clone();
                 $(this).find('.stars').append(copy_star)
               }
+
+              //nascondo le scritte
+              $('.vetrina .film div').hide()
+              //on hover mouse per mostrare le scritte
+              $(document).on('mouseenter', '.vetrina .film .img_copertina', function(event) {
+                $('.vetrina .film div').hide()
+                $('.vetrina .film .img_copertina').show()
+                $(this).fadeOut('slow');
+                $(this).siblings('div').show()
+              });
+              $(document).on('mouseleave', '.vetrina .film', function(event) {
+                $('.vetrina .film div').hide()
+                $('.vetrina .film .img_copertina').fadeIn('slow');
+                $(this).siblings('div').show()
+              });
 
             });
             //pulisco quello che c era scritto nella ricerca

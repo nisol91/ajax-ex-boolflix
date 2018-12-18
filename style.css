@@ -99,3 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 .stars h6 {
   color: black;
 }
+.lingua img {
+  width: 20px;
+  height: 15px;
+}

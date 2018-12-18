@@ -106,12 +106,12 @@ function my_query(ricerca) {
         $(document).on('mouseenter', '.vetrina .film .img_copertina', function(event) {
           $('.vetrina .film div').hide()
           $('.vetrina .film .img_copertina').show()
-          $(this).slideUp()
+          $(this).fadeOut('slow');
           $(this).siblings('div').show()
         });
         $(document).on('mouseleave', '.vetrina .film', function(event) {
           $('.vetrina .film div').hide()
-          $('.vetrina .film .img_copertina').show()
+          $('.vetrina .film .img_copertina').fadeIn('slow');
           $(this).siblings('div').show()
         });
 

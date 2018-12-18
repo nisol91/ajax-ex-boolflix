@@ -62,7 +62,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-wrap: wrap;
 }
 .film {
-  height: 200px;
+  height: auto;
   width: 33%;
   margin: auto;
   border-bottom: 1px solid black;
@@ -102,4 +102,8 @@ h1, h2, h3, h4, h5, h6 {
 .lingua img {
   width: 20px;
   height: 15px;
+}
+.img_copertina {
+  width: auto;
+  height: 200px;
 }

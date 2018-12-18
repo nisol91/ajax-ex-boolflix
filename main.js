@@ -79,10 +79,13 @@ function my_query(ricerca) {
           }
         }
 
+        var immagine_copertina = films[index]['poster_path']
+
         $(this).find('h1').text(films[index]['title'])
         $(this).find('h2').text(films[index]['original_title'])
         $(this).find('h3').text(voto_5)
         $(this).find('h4').text(lingua)
+        $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w185' + immagine_copertina);
         for (var i = 0; i < voto_5; i++) {
           var copy_star = $('.templates .stelle_piene').clone();
           $(this).find('.stars').append(copy_star)
@@ -157,11 +160,7 @@ function my_query(ricerca) {
     }
   })
 
-
-
 }
-
-
 
 //click search
 $('.my_button').click(function() {
@@ -178,25 +177,7 @@ $('.my_input').keypress(function(event) {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//document ready
 });
 
 

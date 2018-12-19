@@ -85,6 +85,7 @@ function my_query(ricerca) {
         $(this).find('h2').text(films[index]['original_title'])
         $(this).find('h3').text(voto_5)
         $(this).find('h4').text(lingua)
+        $(this).find('h5').text(films[index]['release_date'])
         $(this).find('.over p').text(films[index]['overview'])
 
 
@@ -221,14 +222,16 @@ function my_query(ricerca) {
               $(this).find('h2').text(films[index]['original_name'])
               $(this).find('h3').text(voto_5)
               $(this).find('h4').text(lingua)
+              $(this).find('h5').text(films[index]['first_air_date'])
               $(this).find('.over p').text(films[index]['overview'])
+              $(this).find('#tipo').text('Serie Tv')
 
 
 
               //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
               //la chiamata stessa!!!
               var vetrina_film = $(this)
-              
+
 
               //chiamata ajax per i generi
               var generis = []

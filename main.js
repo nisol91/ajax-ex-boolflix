@@ -87,12 +87,47 @@ function my_query(ricerca) {
         $(this).find('h4').text(lingua)
         $(this).find('.over p').text(films[index]['overview'])
 
-        //chiamata ajax per gli attori dentro a credit
-        var codice = films[index]['id']
-        console.log(codice);
+
         //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
         //la chiamata stessa!!!
         var vetrina_film = $(this)
+
+        //chiamata ajax per i generi
+        var generis = []
+        var gen = films[index]['genre_ids']
+        for (var i = 0; i < gen.length; i++) {
+          generis.push(gen[i])
+        }
+        console.log(generis);
+
+        $.ajax({
+          url: 'https://api.themoviedb.org/3/genre/movie/list?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+          type: 'GET',
+          data: {
+          },
+          success: function(data) {
+            console.log("success");
+            var miei_generi = data.genres
+            console.log(miei_generi);
+            var count = 0
+            for (var i = 0; i < miei_generi.length; i++) {
+              if (generis.includes(miei_generi[i]['id'])) {
+                count += 1
+                vetrina_film.find('.generi .genres').append('<p>Genere ' + count + ': ' + miei_generi[i]['name'] + '</p>')
+              }
+            }
+          },
+          error: function() {
+            console.log("error");
+          }
+        });
+
+
+
+        //chiamata ajax per gli attori dentro a credit
+        var codice = films[index]['id']
+        console.log(codice);
+
         $.ajax({
           url: 'https://api.themoviedb.org/3/movie/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
           type: 'GET',
@@ -188,12 +223,48 @@ function my_query(ricerca) {
               $(this).find('h4').text(lingua)
               $(this).find('.over p').text(films[index]['overview'])
 
-              //chiamata ajax per gli attori dentro a credit
-              var codice = films[index]['id']
-              console.log(codice);
+
+
               //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
               //la chiamata stessa!!!
               var vetrina_film = $(this)
+              
+
+              //chiamata ajax per i generi
+              var generis = []
+              var gen = films[index]['genre_ids']
+              for (var i = 0; i < gen.length; i++) {
+                generis.push(gen[i])
+              }
+              console.log(generis);
+
+              $.ajax({
+                url: 'https://api.themoviedb.org/3/genre/movie/list?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+                type: 'GET',
+                data: {
+                },
+                success: function(data) {
+                  console.log("success");
+                  var miei_generi = data.genres
+                  console.log(miei_generi);
+                  var count = 0
+                  for (var i = 0; i < miei_generi.length; i++) {
+                    if (generis.includes(miei_generi[i]['id'])) {
+                      count += 1
+                      vetrina_film.find('.generi .genres').append('<p>Genere ' + count + ': ' + miei_generi[i]['name'] + '</p>')
+                    }
+                  }
+                },
+                error: function() {
+                  console.log("error");
+                }
+              });
+
+
+              //chiamata ajax per gli attori dentro a credit
+              var codice = films[index]['id']
+              console.log(codice);
+
               $.ajax({
                 url: 'https://api.themoviedb.org/3/tv/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
                 type: 'GET',

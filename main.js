@@ -119,6 +119,8 @@ function my_query(ricerca) {
           $(this).find('h4').text(lingua)
           $(this).find('h5').text(films[index]['release_date'])
           $(this).find('.over p').text(films[index]['overview'])
+          $(this).find('#tipo').text('Movie')
+
 
         } else if  (films[index]['media_type'] == 'tv') {
           $(this).find('h1').text(films[index]['name'])

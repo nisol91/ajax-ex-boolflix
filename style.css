@@ -61,14 +61,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
-  padding: 0 150px;
 }
 .film {
   height: 400px;
-  width: 33%;
+  width: 30%;
   margin: auto;
   position: relative;
   padding: 5px;
+  margin: 0 auto;
 }
 .film > * {
   margin: 20px 0;

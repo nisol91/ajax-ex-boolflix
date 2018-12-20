@@ -49,7 +49,7 @@ function my_query(ricerca) {
 
   //chiamata per FILM
   $.ajax({
-    url: 'https://api.themoviedb.org/3/search/movie?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+    url: 'https://api.themoviedb.org/3/search/multi?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
     type: 'GET',
     data: {
       query: ricerca,
@@ -81,12 +81,49 @@ function my_query(ricerca) {
         }
 
 
-        $(this).find('h1').text(films[index]['title'])
-        $(this).find('h2').text(films[index]['original_title'])
-        $(this).find('h3').text(voto_5)
-        $(this).find('h4').text(lingua)
-        $(this).find('h5').text(films[index]['release_date'])
-        $(this).find('.over p').text(films[index]['overview'])
+        if (films[index]['media_type'] == 'movie') {
+          $(this).find('h1').text(films[index]['title'])
+          $(this).find('h2').text(films[index]['original_title'])
+          $(this).find('h3').text(voto_5)
+          $(this).find('h4').text(lingua)
+          $(this).find('h5').text(films[index]['release_date'])
+          $(this).find('.over p').text(films[index]['overview'])
+
+        } else if  (films[index]['media_type'] == 'tv') {
+          $(this).find('h1').text(films[index]['name'])
+          $(this).find('h2').text(films[index]['original_name'])
+          $(this).find('h5').text(films[index]['first_air_date'])
+          $(this).find('.over p').text(films[index]['overview'])
+          $(this).find('#tipo').text('Serie Tv')
+
+          // chiamata ajax per gli attori dentro a credit(SERIE TV)
+          var codice = films[index]['id']
+          console.log(codice);
+
+          $.ajax({
+            url: 'https://api.themoviedb.org/3/tv/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+            type: 'GET',
+            data: {
+            },
+            success: function(data) {
+              console.log("success");
+              for (var i = 0; i < 5; i++) {
+                var attori = data.cast[i]['name']
+                console.log(attori);
+                if (i < 4) {
+                  vetrina_film.find('.credits .attori_tv').append(attori + ', ')
+                } else {
+                  vetrina_film.find('.credits .attori_tv').append(attori + '.')
+                }
+              }
+            },
+            error: function() {
+              console.log("error");
+            }
+          });
+        }
+
+
 
 
         //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
@@ -126,34 +163,41 @@ function my_query(ricerca) {
 
 
         //chiamata ajax per gli attori dentro a credit
-        var codice = films[index]['id']
-        console.log(codice);
+        if (films[index]['media_type'] == 'movie') {
 
-        $.ajax({
-          url: 'https://api.themoviedb.org/3/movie/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
-          type: 'GET',
-          data: {
-          },
-          success: function(data) {
-            console.log("success");
-            for (var i = 0; i < 5; i++) {
-              var attori = data.cast[i]['name']
-              console.log(attori);
-              if (i < 4) {
-                vetrina_film.find('.credits .attori').append(attori + ', ')
-              } else {
-                vetrina_film.find('.credits .attori').append(attori + '.')
+          var codice = films[index]['id']
+          console.log(codice);
+
+          $.ajax({
+            url: 'https://api.themoviedb.org/3/movie/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+            type: 'GET',
+            data: {
+            },
+            success: function(data) {
+              console.log("success");
+              for (var i = 0; i < 5; i++) {
+                var attori = data.cast[i]['name']
+                console.log(attori);
+                if (i < 4) {
+                  vetrina_film.find('.credits .attori_movie').append(attori + ', ')
+                } else {
+                  vetrina_film.find('.credits .attori_movie').append(attori + '.')
+                }
               }
+            },
+            error: function() {
+              console.log("error");
             }
-          },
-          error: function() {
-            console.log("error");
-          }
-        });
+          });
+        }
         //-----------
-
+        //STILE VETRINA
         var immagine_copertina = films[index]['poster_path']
+        console.log(immagine_copertina);
         $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w185' + immagine_copertina);
+        if (immagine_copertina == null) {
+          $(this).find('.img_copertina').addClass('no_img')
+        }
 
         for (var i = 0; i < voto_5; i++) {
           var copy_star = $('.templates .stelle_piene').clone();
@@ -184,148 +228,153 @@ function my_query(ricerca) {
 
       //pulisco quello che c era scritto nella ricerca
       $('.searchbar input').val('')
+
+      //******************
+
       //chiamata per SERIE TV
-      if (films.length == 0) {
-        $.ajax({
-          url: 'https://api.themoviedb.org/3/search/tv?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
-          type: 'GET',
-          data: {
-            query: ricerca,
-          },
-          success: function(data) {
-            console.log("success");
-
-            var risultato = data
-            // console.log(risultato);
-            var films = data.results
-            console.log(films);
-
-            //creo un numero di cartoline uguale al numero di film trovati dal DB
-            for (var i = 0; i < films.length; i++) {
-              var copy = $('.templates .film').clone();
-              $('.vetrina').append(copy)
-            }
-
-            //inserisco tutti i valori del film presi dal DB
-            $('.vetrina .film').each(function(index) {
-              var voto_10 = films[index]['vote_average']
-              var voto_5 = Math.floor(voto_10/2)
-
-              var lingua = films[index]['original_language']
-              for (var i = 0; i < languages.length; i++) {
-                if (lingua === languages[i].lang) {
-                  $(this).find('.lingua img').attr('src', languages[i].img);
-                }
-              }
-
-              $(this).find('h1').text(films[index]['name'])
-              $(this).find('h2').text(films[index]['original_name'])
-              $(this).find('h3').text(voto_5)
-              $(this).find('h4').text(lingua)
-              $(this).find('h5').text(films[index]['first_air_date'])
-              $(this).find('.over p').text(films[index]['overview'])
-              $(this).find('#tipo').text('Serie Tv')
-
-
-
-              //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
-              //la chiamata stessa!!!
-              var vetrina_film = $(this)
-
-
-              //chiamata ajax per i generi
-              var generis = []
-              var gen = films[index]['genre_ids']
-              for (var i = 0; i < gen.length; i++) {
-                generis.push(gen[i])
-              }
-              console.log(generis);
-
-              $.ajax({
-                url: 'https://api.themoviedb.org/3/genre/movie/list?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
-                type: 'GET',
-                data: {
-                },
-                success: function(data) {
-                  console.log("success");
-                  var miei_generi = data.genres
-                  console.log(miei_generi);
-                  var count = 0
-                  for (var i = 0; i < miei_generi.length; i++) {
-                    if (generis.includes(miei_generi[i]['id'])) {
-                      count += 1
-                      vetrina_film.find('.generi .genres').append('<p>Genere ' + count + ': ' + miei_generi[i]['name'] + '</p>')
-                    }
-                  }
-                },
-                error: function() {
-                  console.log("error");
-                }
-              });
-
-
-              //chiamata ajax per gli attori dentro a credit
-              var codice = films[index]['id']
-              console.log(codice);
-
-              $.ajax({
-                url: 'https://api.themoviedb.org/3/tv/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
-                type: 'GET',
-                data: {
-                },
-                success: function(data) {
-                  console.log("success");
-                  for (var i = 0; i < 5; i++) {
-                    var attori = data.cast[i]['name']
-                    console.log(attori);
-                    if (i < 4) {
-                      vetrina_film.find('.credits .attori').append(attori + ', ')
-                    } else {
-                      vetrina_film.find('.credits .attori').append(attori + '.')
-                    }
-                  }
-                },
-                error: function() {
-                  console.log("error");
-                }
-              });
-
-
-              var immagine_copertina = films[index]['poster_path']
-              $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w342' + immagine_copertina);
-              for (var i = 0; i < voto_5; i++) {
-                var copy_star = $('.templates .stelle_piene').clone();
-                $(this).find('.stars').append(copy_star)
-              }
-              for (var i = 0; i < (5 - voto_5); i++) {
-                var copy_star = $('.templates .stelle_vuote').clone();
-                $(this).find('.stars').append(copy_star)
-              }
-
-              //nascondo le scritte
-              $('.vetrina .film div').hide()
-              //on hover mouse per mostrare le scritte
-              $(document).on('mouseenter', '.vetrina .film .img_copertina', function(event) {
-                $('.vetrina .film div').hide()
-                $('.vetrina .film .img_copertina').show()
-                $(this).fadeOut('slow');
-                $(this).siblings('div').show()
-              });
-              $(document).on('mouseleave', '.vetrina .film', function(event) {
-                $('.vetrina .film div').hide()
-                $('.vetrina .film .img_copertina').fadeIn('slow');
-                $(this).siblings('div').show()
-              });
-
-            });
-            //pulisco quello che c era scritto nella ricerca
-            $('.searchbar input').val('')
-          },
-          error: function() {
-            console.log("error");
-          }
-        })
-      }
+      // if (films.length == 0) {
+      //   $.ajax({
+      //     url: 'https://api.themoviedb.org/3/search/tv?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+      //     type: 'GET',
+      //     data: {
+      //       query: ricerca,
+      //     },
+      //     success: function(data) {
+      //       console.log("success");
+      //
+      //       var risultato = data
+      //       // console.log(risultato);
+      //       var films = data.results
+      //       console.log(films);
+      //
+      //       //creo un numero di cartoline uguale al numero di film trovati dal DB
+      //       for (var i = 0; i < films.length; i++) {
+      //         var copy = $('.templates .film').clone();
+      //         $('.vetrina').append(copy)
+      //       }
+      //
+      //       //inserisco tutti i valori del film presi dal DB
+      //       $('.vetrina .film').each(function(index) {
+      //         var voto_10 = films[index]['vote_average']
+      //         var voto_5 = Math.floor(voto_10/2)
+      //
+      //         var lingua = films[index]['original_language']
+      //         for (var i = 0; i < languages.length; i++) {
+      //           if (lingua === languages[i].lang) {
+      //             $(this).find('.lingua img').attr('src', languages[i].img);
+      //           }
+      //         }
+      //
+      //         $(this).find('h1').text(films[index]['name'])
+      //         $(this).find('h2').text(films[index]['original_name'])
+      //         $(this).find('h3').text(voto_5)
+      //         $(this).find('h4').text(lingua)
+      //         $(this).find('h5').text(films[index]['first_air_date'])
+      //         $(this).find('.over p').text(films[index]['overview'])
+      //         $(this).find('#tipo').text('Serie Tv')
+      //
+      //
+      //
+      //         //molto importante! perche se non creo questa variabile, il this nell ajax qua sotto diventa
+      //         //la chiamata stessa!!!
+      //         var vetrina_film = $(this)
+      //
+      //
+      //         //chiamata ajax per i generi
+      //         var generis = []
+      //         var gen = films[index]['genre_ids']
+      //         for (var i = 0; i < gen.length; i++) {
+      //           generis.push(gen[i])
+      //         }
+      //         console.log(generis);
+      //
+      //         $.ajax({
+      //           url: 'https://api.themoviedb.org/3/genre/movie/list?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+      //           type: 'GET',
+      //           data: {
+      //           },
+      //           success: function(data) {
+      //             console.log("success");
+      //             var miei_generi = data.genres
+      //             console.log(miei_generi);
+      //             var count = 0
+      //             for (var i = 0; i < miei_generi.length; i++) {
+      //               if (generis.includes(miei_generi[i]['id'])) {
+      //                 count += 1
+      //                 vetrina_film.find('.generi .genres').append('<p>Genere ' + count + ': ' + miei_generi[i]['name'] + '</p>')
+      //               }
+      //             }
+      //           },
+      //           error: function() {
+      //             console.log("error");
+      //           }
+      //         });
+      //
+      //
+      //         //chiamata ajax per gli attori dentro a credit(SERIE TV)
+      //         var codice = films[index]['id']
+      //         console.log(codice);
+      //
+      //         $.ajax({
+      //           url: 'https://api.themoviedb.org/3/tv/' + codice + '/credits?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
+      //           type: 'GET',
+      //           data: {
+      //           },
+      //           success: function(data) {
+      //             console.log("success");
+      //             for (var i = 0; i < 5; i++) {
+      //               var attori = data.cast[i]['name']
+      //               console.log(attori);
+      //               if (i < 4) {
+      //                 vetrina_film.find('.credits .attori').append(attori + ', ')
+      //               } else {
+      //                 vetrina_film.find('.credits .attori').append(attori + '.')
+      //               }
+      //             }
+      //           },
+      //           error: function() {
+      //             console.log("error");
+      //           }
+      //         });
+      //
+      //
+      //         var immagine_copertina = films[index]['poster_path']
+      //         $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w342' + immagine_copertina);
+      //         for (var i = 0; i < voto_5; i++) {
+      //           var copy_star = $('.templates .stelle_piene').clone();
+      //           $(this).find('.stars').append(copy_star)
+      //         }
+      //         for (var i = 0; i < (5 - voto_5); i++) {
+      //           var copy_star = $('.templates .stelle_vuote').clone();
+      //           $(this).find('.stars').append(copy_star)
+      //         }
+      //
+      //         //nascondo le scritte
+      //         $('.vetrina .film div').hide()
+      //         //on hover mouse per mostrare le scritte
+      //         $(document).on('mouseenter', '.vetrina .film .img_copertina', function(event) {
+      //           $('.vetrina .film div').hide()
+      //           $('.vetrina .film .img_copertina').show()
+      //           $(this).fadeOut('slow');
+      //           $(this).siblings('div').show()
+      //         });
+      //         $(document).on('mouseleave', '.vetrina .film', function(event) {
+      //           $('.vetrina .film div').hide()
+      //           $('.vetrina .film .img_copertina').fadeIn('slow');
+      //           $(this).siblings('div').show()
+      //         });
+      //
+      //       });
+      //       //pulisco quello che c era scritto nella ricerca
+      //       $('.searchbar input').val('')
+      //     },
+      //     error: function() {
+      //       console.log("error");
+      //     }
+      //   })
+      // }
+      //fine chiamata serie tv
+      //**************
     },
     error: function() {
       console.log("error");

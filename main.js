@@ -85,9 +85,9 @@ function my_query(ricerca) {
         }
       }
       console.log(films);
-      //so che e' una follia, ma ne ho fatti tre per far ripassare l array piu volte in cerca di person,
+      //so che e' una follia, ma ho fatto tre cicli per far ripassare l array piu volte in cerca di person,
       //perche con un solo ciclo , andando a eliminare alcune posizioni, l indice i saltava certe posizioni
-      //dell array che erano persone.
+      //dell array che erano persone e non le eliminava.
       //****
 
 
@@ -225,7 +225,9 @@ function my_query(ricerca) {
           });
         }
         //-----------
-        //STILE VETRINA
+
+
+        //STILE CARDS
         var immagine_copertina = films[index]['poster_path']
         console.log(immagine_copertina);
         $(this).find('.img_copertina').attr('src', 'https://image.tmdb.org/t/p/' + 'w185' + immagine_copertina);

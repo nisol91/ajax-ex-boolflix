@@ -69,6 +69,7 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   padding: 5px;
   margin: 0 auto;
+  overflow: auto;
 }
 .film > * {
   margin: 20px 0;
@@ -115,6 +116,8 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 0;
   left: 0;
+  border: none;
+  border: 1px solid black;
   border-radius: 2px;
 }
 .over p, .credits p, .generi p {

@@ -56,15 +56,16 @@ h1, h2, h3, h4, h5, h6 {
 .vetrina {
   width: 100%;
   height: auto;
-  background: lightgrey;
+  background: grey;
   margin: auto;
   margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
+  padding: 0 15%;
 }
 .film {
   height: 400px;
-  width: 30%;
+  width: 25%;
   margin: auto;
   position: relative;
   padding: 5px;
@@ -74,23 +75,30 @@ h1, h2, h3, h4, h5, h6 {
 .film > * {
   margin: 20px 0;
 }
+.film h1, .film h2, .film h3, .film h4, .film h5 {
+  font-weight: lighter;
+}
 .film h1 {
-  font-size: 9px;
+  font-size: 10px;
 }
 .film h2 {
-  font-size: 9px;
+  font-size: 10px;
 }
 .film h3 {
-  font-size: 9px;
+  font-size: 10px;
 }
 .film h4 {
-  font-size: 9px;
+  font-size: 10px;
 }
 .film h5 {
-  font-size: 9px;
+  font-size: 10px;
 }
 .film h6 {
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: bolder;
+}
+.film_val h6, .stars h6 {
+  margin-right: 3px;
 }
 .film_val {
   display: flex;
@@ -109,21 +117,33 @@ h1, h2, h3, h4, h5, h6 {
 .lingua img {
   width: 25px;
   height: 15px;
+  margin-left: 10px;
 }
 .img_copertina {
   width: auto;
   height: 260px;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 20px;
   border: none;
   border: 1px solid black;
   border-radius: 2px;
 }
 .over p, .credits p, .generi p {
-  font-size: 8px;
+  font-size: 9px;
 }
 .no_img {
   background: white;
   width: 200px;
+}
+.barretta {
+  height: 50px;
+  background: lightgrey;
+  padding: 15px;
+}
+.barretta h1, .barretta h2 {
+  font-size: 13px;
+}
+span {
+  width: 10px;
 }

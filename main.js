@@ -47,7 +47,7 @@ function my_query(ricerca) {
   $('.vetrina .film').remove()
 
 
-  //chiamata per FILM
+  //chiamata ajax MULTI (film e serie tv)
   $.ajax({
     url: 'https://api.themoviedb.org/3/search/multi?api_key=e1cd6fed3cf1a6213a3fd2941b25d0fc',
     type: 'GET',
@@ -91,6 +91,7 @@ function my_query(ricerca) {
       //****
 
 
+      $('.barretta h1').text('la tua ricerca: \'' + ricerca + '\'')
 
 
       //creo un numero di cartoline uguale al numero di film trovati dal DB
@@ -112,11 +113,12 @@ function my_query(ricerca) {
         }
 
 
+
         if (films[index]['media_type'] == 'movie') {
           $(this).find('h1').text(films[index]['title'])
           $(this).find('h2').text(films[index]['original_title'])
           $(this).find('h3').text(voto_5)
-          $(this).find('h4').text(lingua)
+          $(this).find('h4').text(lingua + ' ')
           $(this).find('h5').text(films[index]['release_date'])
           $(this).find('.over p').text(films[index]['overview'])
           $(this).find('#tipo').text('Movie')
@@ -125,12 +127,15 @@ function my_query(ricerca) {
         } else if  (films[index]['media_type'] == 'tv') {
           $(this).find('h1').text(films[index]['name'])
           $(this).find('h2').text(films[index]['original_name'])
+          $(this).find('h3').text(voto_5)
+          $(this).find('h4').text(lingua + ' ')
           $(this).find('h5').text(films[index]['first_air_date'])
           $(this).find('.over p').text(films[index]['overview'])
-          $(this).find('#tipo').text('Serie Tv')
+          $(this).find('#tipo').text('Tv Serie')
 
 
           // chiamata ajax per gli attori dentro a credit(SERIE TV)
+          //NB e' tutto dentro all else if!!!
           var codice = films[index]['id']
           console.log(codice);
 
@@ -164,7 +169,7 @@ function my_query(ricerca) {
         //la chiamata stessa!!!
         var vetrina_film = $(this)
 
-        //chiamata ajax per i generi
+        //chiamata ajax per i generi (MOVIE e SERIE TV)
         var generis = []
         var gen = films[index]['genre_ids']
         for (var i = 0; i < gen.length; i++) {
@@ -196,7 +201,7 @@ function my_query(ricerca) {
 
 
 
-        //chiamata ajax per gli attori dentro a credit
+        //chiamata ajax per gli attori dentro a credit (MOVIE)
         if (films[index]['media_type'] == 'movie') {
 
           var codice = films[index]['id']
@@ -224,6 +229,9 @@ function my_query(ricerca) {
             }
           });
         }
+        //NOTA: Queste due chiamate qua sopra (generi e credit dei movie) sono una dopo l altra e non una dentro l altra.
+        //questo potrebbe causare asincronicita nel caso in cui una chiamata necessitasse dei dati di un altra delle due.
+        //fortunatamente in questo caso non e' cosi, sono indipendenti, quindi nessun problema, ma bisogna farci attenzione.
         //-----------
 
 

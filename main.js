@@ -88,6 +88,7 @@ function my_query(ricerca) {
       //so che e' una follia, ma ho fatto tre cicli per far ripassare l array piu volte in cerca di person,
       //perche con un solo ciclo , andando a eliminare alcune posizioni, l indice i saltava certe posizioni
       //dell array che erano persone e non le eliminava.
+      //FORSE la soluzione potrebbe essere fare il for alla rovescia con i--, oppure usare array.filter
       //****
 
 
